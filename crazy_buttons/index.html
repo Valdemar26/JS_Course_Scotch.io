@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Crazy Buttons</title>
+    <link
+            rel="stylesheet"
+            href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+            integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+            crossorigin="anonymous">
+    <style>
+        body { padding: 30px; }
+        .btn-crazy {
+            position: absolute;
+            top: 30px;
+            left: 40%;
+            width: 20%;
+            transition: 0.5s ease all;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <button type="button" class="btn-crazy btn btn-lg btn-danger">
+        Click Me!
+    </button>
+    <button type="button" class="btn-crazy btn btn-lg btn-success">
+        Click Me!
+    </button>
+    <button type="button" class="btn-crazy btn btn-lg btn-primary">
+        Click Me!
+    </button>
+    <button type="button" class="btn-crazy btn btn-lg btn-info">
+        Click Me!
+    </button>
+    <button type="button" class="btn-crazy btn btn-lg btn-warning">
+        Click Me!
+    </button>
+
+
+<!-- start JavaScript -->
+<script>
+
+    // grab everything we need
+    const crazyButtons = document.querySelectorAll('.btn-crazy');
+
+    // define our functions
+    function goCrazy() {
+        // get a random number for the left offset and top offset
+        const offsetLeft = Math.random() * (window.innerWidth - this.clientWidth);
+        const offsetTop = Math.random() * (window.innerHeight - this.clientHeight);
+
+        console.log(offsetLeft, offsetTop);
+
+        // apply those numbers to the buttons
+        this.style.top = offsetTop + 'px';
+        this.style.left = offsetLeft + 'px';
+    }
+
+
+    // add event listeners
+    crazyButtons.forEach(button => button.addEventListener('mouseenter', goCrazy));
+
+</script>
+
+</body>
+</html>
