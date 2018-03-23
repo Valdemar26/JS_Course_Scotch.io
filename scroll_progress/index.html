@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Scroll Progress</title>
+    <link
+        rel="stylesheet"
+        href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+        crossorigin="anonymous">
+    <style>
+        body {
+            padding: 30px;
+            background: #efefef;
+        }
+        .scroll-line {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 8px;
+            background: #1ce;
+            transition: 0.5s cubic-bezier(0.075, 0.82, 0.165, 1) width;
+        }
+        .content           {
+            background-color: #fff;
+            padding: 50px;
+            font-size: 18px;
+            line-height: 1.5;
+            min-height: 3000px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="scroll-line"></div>
+    <div class="container">
+        <div class="content">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto facilis magnam
+            nesciunt nisi nobis nostrum nulla quaerat quis sequi sint? Aperiam assumenda
+            consectetur consequatur consequuntur dolore, dolorem dolores ducimus est explicabo
+            facilis fugiat illo ipsam magni mollitia nisi nobis non, nostrum praesentium quas quia
+            quisquam quos recusandae vel vero vitae!<br><br><br><br>
+
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium praesentium quod ut.
+            Aperiam architecto corporis dolores doloribus neque praesentium quidem sapiente tempore
+            temporibus, vel! Aperiam aut commodi dignissimos distinctio ea error illum maiores odit
+            quaerat voluptatibus. Ad aliquid, amet animi aspernatur atque delectus dolore eius error
+            esse harum in iste iusto magni molestias, nihil nulla odio odit ut! Accusantium aut autem
+            cupiditate deserunt doloremque laborum libero neque placeat rerum, tempore.
+            <br><br><br><br>
+
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus ad animi blanditiis
+            dolore doloremque est ex iste laboriosam libero maiores modi neque, nihil nisi odio odit
+            provident quia quis recusandae repudiandae tempora tenetur totam voluptatem. At quod
+            repellat vitae. Ad alias, aliquam aliquid aspernatur beatae consequatur doloremque dolores
+            illo illum, ipsum molestiae nobis quisquam quos reiciendis repellendus repudiandae
+            similique sunt unde veritatis voluptate. Ex facilis maiores neque, nostrum omnis similique?
+            Ad alias animi aspernatur at atque culpa delectus dicta dignissimos dolor dolore dolorem
+            doloremque earum enim ex ipsa iusto nam natus necessitatibus nihil nobis nostrum numquam
+            officia omnis perferendis perspiciatis quas quasi reiciendis, rem sed sint temporibus
+            veniam veritatis voluptatem! Blanditiis illo natus, officiis perspiciatis provident
+            quod sit unde voluptatibus.<br><br><br><br>
+        </div>
+    </div>
+
+
+<!-- start JavaScript -->
+<script>
+
+    // grab everything we need
+    const scrollLine = document.querySelector('.scroll-line');
+
+    // define our functions
+    function fillScrollLine() {
+        const windowHeight = window.innerHeight;
+        const fullHeight = document.body.clientHeight;
+        const scrolled = window.scrollY;
+        const percentScrolled = (scrolled / (fullHeight - windowHeight)) * 100;
+
+        scrollLine.style.width = `${percentScrolled}%`;
+    }
+
+    // add event listeners
+    window.addEventListener('scroll', debounce(fillScrollLine));
+
+    function debounce(func, wait = 15, immediate) {
+        let timeout;
+        return function () {
+            let context = this,
+                args = arguments;
+            let later = function() {
+                timeout = null;
+                if(!immediate) func.apply(context, args);
+            };
+            let callNow = immediate && !timeout;
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+            if(callNow) func.apply(context, args);
+        };
+    }
+
+</script>
+
+</body>
+</html>
