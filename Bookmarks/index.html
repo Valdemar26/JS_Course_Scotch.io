@@ -73,10 +73,11 @@
             z-index: 9;
         }
         .bookmark {
-            display: block;
+            display: flex;
             background: #fff;
             color: #999;
             padding: 20px;
+            position: relative;
             transition: 0.3s ease all;
             border-bottom: 1px solid #ddd;
             font-size: 16px;
@@ -93,6 +94,31 @@
             border-bottom-left-radius: 5px;
             border-bottom-right-radius: 5px;
             border-bottom: 0;
+        }
+        .bookmark .img {
+            background-color: #ddd;
+            border-radius: 3px;
+            background-image: url("http://lorempixel.com/output/abstract-q-c-80-60-7.jpg");
+            background-size: cover;
+            width: 80px;
+            height: 60px;
+            margin-right: 20px;
+        }
+        .bookmark .title {
+            display: flex;
+            align-items: center;
+        }
+        .bookmark .glyphicon-remove {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: #eee;
+            font-size: 12px;
+            transition: 0.3s ease color;
+            cursor: pointer;
+        }
+        .bookmark:hover .glyphicon-remove {
+            color: #aaa;
         }
 
     </style>
@@ -162,10 +188,12 @@
     }
 
     function fillBookmarksList(bookmarks = []) {
-        const bookmarksHtml = bookmarks.map((bookmark) => {
+        const bookmarksHtml = bookmarks.map((bookmark, i) => {
             return `
-                <a href="#" class="bookmark">
-                    ${bookmark.title}
+                <a href="#" class="bookmark" data-id="${i}">
+                    <div class="img"></div>
+                    <div class="title">${bookmark.title}</div>
+                    <span class="glyphicon glyphicon-remove"></span>
                 </a>
             `
         }).join('');
@@ -182,11 +210,21 @@
 //        }
     }
 
+    function removeBookmark(e) {
+        if(!e.target.matches('.glyphicon-remove')) return;
+
+        const index = e.target.parentNode.dataset.id;
+        bookmarks.splice(index, 1);
+        fillBookmarksList(bookmarks);
+        storeBookmarks(bookmarks);
+    }
+
     function storeBookmarks(bookmarks = []) {
         localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
     }
 
     bookmarkForm.addEventListener('submit', createBookmark);
+    bookmarksList.addEventListener('click', removeBookmark);
 
 </script>
 </body>
