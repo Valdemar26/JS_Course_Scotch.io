@@ -4,6 +4,12 @@ window.addEventListener('load', function() {
     const overlay = document.querySelector('.overlay');
     const message = document.querySelector('.message');
 
+    /**
+     * credentials from opengraph.io
+     */
+    const apiUrl = 'https://opengraph.io/api/1.0/site';
+    const appId = '5abe0a670e40872a0745c088';
+
     function showFloater() {
         body.classList.add('show-floater');
     }
@@ -15,7 +21,7 @@ window.addEventListener('load', function() {
     }
 
     input.addEventListener('focusin', showFloater);
-    input.addEventListener('focusout', closeFloater);
+    // input.addEventListener('focusout', closeFloater);
     overlay.addEventListener('click', closeFloater);
 
     /**
@@ -32,28 +38,45 @@ window.addEventListener('load', function() {
         e.preventDefault(); // stop reloading the page after create bookmark
 
         // prevent adding empty bookmarks
-        if(bookmarkInput.value.length === 0) {
+        if(!bookmarkInput.value) {
             message.classList.add('visible');
             return false;
         }
 
-        // add a new bookmarks and save that bookmarks list to localStorage
-        const title = bookmarkInput.value;
-        const bookmark = {
-            title: title
-        };
+        const myUrl = encodeURIComponent(bookmarkInput.value);
 
-        bookmarks.push(bookmark);
-        fillBookmarksList(bookmarks);
-        storeBookmarks(bookmarks);
-        bookmarkForm.reset(); // reset the form
+        fetch(`${apiUrl}/${myUrl}?app_id=${appId}`)
+            .then(response => response.json())
+            .then(data => {
+                // const description = data.hybridGraph.description;
+                console.log(data.hybridGraph);
+
+                // add a new bookmarks and save that bookmarks list to localStorage
+                const title = bookmarkInput.value;
+
+                const bookmark = {
+                    title: data.hybridGraph.title,
+                    image: data.hybridGraph.image,
+                    link: data.hybridGraph.url
+                };
+
+                bookmarks.push(bookmark);
+                fillBookmarksList(bookmarks);
+                storeBookmarks(bookmarks);
+                bookmarkForm.reset(); // reset the form
+
+            })
+            .catch(error => {
+                console.log('There is a problem to getting info!');
+            })
+
     }
 
     function fillBookmarksList(bookmarks = []) {
         const bookmarksHtml = bookmarks.map((bookmark, i) => {
             return `
-                <a href="#" class="bookmark" data-id="${i}">
-                    <div class="img"></div>
+                <a href="${bookmark.link}" target="_blank" class="bookmark" data-id="${i}">
+                    <div class="img" style="background-image: url('${bookmark.image}')"></div>
                     <div class="title">${bookmark.title}</div>
                     <span class="glyphicon glyphicon-remove"></span>
                 </a>

@@ -3,9 +3,9 @@
     padding: 0;
 }
 body {
+    height: 100%;
     padding: 30px;
     background-image: url("ocean.jpeg");
-    background-size: cover;
 }
 body.show-floater .floater {
     transform: scale(1.1);
@@ -93,7 +93,8 @@ body.show-floater .overlay {
     border-radius: 3px;
     background-image: url("http://lorempixel.com/output/abstract-q-c-80-60-7.jpg");
     background-size: cover;
-    width: 80px;
+    background-position: top center;
+    width: 120px;
     height: 60px;
     margin-right: 20px;
 }
@@ -115,11 +116,12 @@ body.show-floater .overlay {
 }
 
 .message {
-    display: none;
-    color: #dc143c;
+    display: flex;
+    opacity: 0;
+    color: #dc144c;
     justify-content: center;
-    transition: 1.4s ease color;
+    transition: opacity 0.5s linear;
 }
 .visible {
-    display: flex;
+    opacity: 1;
 }
